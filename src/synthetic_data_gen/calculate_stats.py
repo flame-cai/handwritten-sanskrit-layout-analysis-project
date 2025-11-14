@@ -8,11 +8,11 @@ from sklearn.decomposition import PCA
 
 import numpy as np
 from scipy.spatial import KDTree
-from sklearn.mixture import GaussianMixture # New import
+from sklearn.mixture import GaussianMixture 
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from matplotlib.collections import LineCollection
-import matplotlib.patches as mpatches # New import needed for custom legend
+import matplotlib.patches as mpatches 
 
 # --- Configuration ---
 # K for K-Nearest Neighbors in inter-line spacing calculation
@@ -179,7 +179,7 @@ def calculate_intra_line_stats(lines_data: dict) -> dict:
 
 
 def calculate_inter_line_stats(all_points: np.ndarray, lines_data: dict, page_dims: dict) -> dict:
-    # This function remains unchanged
+
     logging.info("Calculating inter-line statistics...")
     all_rvs = []
     
@@ -224,7 +224,6 @@ def calculate_inter_line_stats(all_points: np.ndarray, lines_data: dict, page_di
 
 
 def calculate_page_level_stats(all_points: np.ndarray, page_dims: dict) -> dict:
-    # This function remains unchanged
     logging.info("Calculating page-level statistics...")
     width = page_dims.get('width', 0)
     height = page_dims.get('height', 0)
@@ -256,7 +255,6 @@ def calculate_page_level_stats(all_points: np.ndarray, page_dims: dict) -> dict:
 
 
 def calculate_graph_based_stats(all_points: np.ndarray, page_dims: dict) -> dict:
-    # This function remains unchanged
     logging.info("Calculating graph-based statistics...")
     n_points = len(all_points)
     if n_points < HEURISTIC_GRAPH_K:

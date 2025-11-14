@@ -29,7 +29,7 @@ class TextBox:
     # Internal state for processing
     points_local: Optional[np.ndarray] = None
     line_ids_local: Optional[np.ndarray] = None
-    # --- NEW: Array to track sub-components (0=main, 1=gloss1, 2=gloss2, etc.) ---
+    #  Array to track sub-components (0=main, 1=gloss1, 2=gloss2, etc.) ---
     sub_box_ids_local: Optional[np.ndarray] = None
     
     width: Optional[float] = None
@@ -158,10 +158,10 @@ def _create_one_gloss_line(
     
     gloss_font_size = base_font_size * sample_from_distribution(gloss_config.font_size_factor, rng)
 
-    # --- MODIFIED: Calculate gloss character spacing relative to the main line's ---
+
     spacing_multiplier = sample_from_distribution(gloss_config.character_spacing_multiplier, rng)
     gloss_char_spacing = main_char_spacing * spacing_multiplier
-    # --- END MODIFICATION ---
+
     
     gloss_word_spacing = gloss_char_spacing * sample_from_distribution(content_config.word_spacing_factor, rng)
     
@@ -208,17 +208,15 @@ def _create_text_lines(box_config: dict, content_config: Config, rng: np.random.
     max_line_width = 0
     current_y = 0
     
-    # --- MODIFIED: Implement the "sample-once-then-vary" pattern ---
     # 1. Sample the base properties for the entire textbox once.
     base_words_per_line = sample_from_distribution(box_config.words_per_line, rng)
     base_chars_per_word = sample_from_distribution(box_config.chars_per_word, rng)
     variation_factor = sample_from_distribution(content_config.line_length_variation.variation_factor, rng)
-    # --- END MODIFICATION ---
+
 
     has_gloss_prob = getattr(box_config, 'interlinear_gloss_probability', 0)
     
     for _ in range(lines_per_box):
-        # --- MODIFIED: Apply slight variation to the base values for each line ---
         # Calculate the allowed character deviation for this line
         char_variation = int(base_chars_per_word * variation_factor)
         
@@ -228,7 +226,7 @@ def _create_text_lines(box_config: dict, content_config: Config, rng: np.random.
         
         # Ensure the final character count is at least 1
         final_chars_per_word = max(1, base_chars_per_word + random_delta)
-        # --- END MODIFICATION ---
+
 
         # Generate the main line of text using the calculated `final_chars_per_word`
         current_x = 0
@@ -251,7 +249,6 @@ def _create_text_lines(box_config: dict, content_config: Config, rng: np.random.
             
         text_line = TextLine(words=main_words)
 
-        # ... (The rest of the function, including gloss generation, remains unchanged) ...
         if rng.random() < has_gloss_prob:
             gloss_config = content_config.interlinear_gloss
             placement = sample_from_distribution(gloss_config.placement, rng)

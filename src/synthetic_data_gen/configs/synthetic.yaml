@@ -1,17 +1,13 @@
 # --- General Generation Settings ---
 # python synthetic-data-gen/generate.py --dry-run --config synthetic-data-gen/configs/histdb_synthetic.yaml
 generation:
-  num_samples: 10000 # set this less than dry run num of samples to enable VIZ
+  num_samples: 5 # set this less than 50 to enable dry run and visualize
   num_workers: -1 # -1 means use all available CPU cores
   base_seed: 42
-  # output_dir: "./manuscript-gnn-benchmark/data/synthetic-dataset-10K-HistDB"
-  output_dir: "/home/kartik/HTR DATASETS/few_shot_competition/proposed_method/synthetic_data_gen/generated-synthetic-data"
-  dry_run_num_samples: 50 # Number of samples for a dry run
+  output_dir: "./generated-synthetic-data"
 
 # --- Visualization Settings ---
 visualization:
-  enabled: true
-  render_on_dry_run_only: true
   coloring: "textbox" # "textbox" or "textline"
   point_size_multiplier: 1.0
 
@@ -19,9 +15,9 @@ visualization:
 page:
   # First, decide on an orientation with given probabilities.
   orientation_probabilities:
-    portrait: 0.90   # 47.5% chance for a portrait layout
-    landscape: 0.05  # 47.5% chance for a landscape layout
-    square: 0.05      # 5% chance for a square-like layout
+    portrait: 0.40   # chance for a portrait layout
+    landscape: 0.40  # chance for a landscape layout
+    square: 0.20      # chance for a square-like layout
 
   # Define the distributions for each side type.
   # Ensure these ranges have minimal overlap to create distinct rectangles.
@@ -33,12 +29,9 @@ page:
 
   
   layout_strategy:
-    # Name of the strategy to use. Options are registered in the code.
-    # We can use a choice distribution to randomly select a strategy per page.
     dist: "choice"
     choices:
       - "rejection_sampling"
-      # - "grid" # Make grid layout less frequent
     weights: [1.0] # Example of uniform weights
 
 # --- Layout Strategy: Rejection Sampling ---
@@ -57,7 +50,7 @@ rejection_sampling:
 textbox_content:
   # Base parameters per textbox type
   main_text:
-    font_size: { dist: "uniform_int", min: 15, max: 30 } #our manuscript actually don't have this big font size
+    font_size: { dist: "uniform_int", min: 15, max: 30 } 
     lines_per_box: { dist: "uniform_int", min: 4, max: 70 }
     words_per_line: { dist: "uniform_int", min: 1, max: 1 }
     chars_per_word: { dist: "uniform_int", min: 6, max: 60 }
@@ -91,7 +84,7 @@ textbox_content:
 
   
   # Spacing is defined as a multiplier of the base font_size
-  character_spacing_factor: { dist: "uniform_float", min: 1.0, max: 3 } # we might need to increase this to match 'binned_rhs_by_font_size' 
+  character_spacing_factor: { dist: "uniform_float", min: 1.0, max: 3 } 
    # Spacing is defined as a multiplier of character spacing
   word_spacing_factor: { dist: "uniform_float", min: 1.4, max: 2.0 }
   line_spacing_factor: { dist: "uniform_float", min: 1.1, max: 2.0 }
@@ -100,12 +93,10 @@ textbox_content:
   # Line Breaks
   line_break_probability: { dist: "uniform_float", min: 0.0, max: 0.2 }
 
-   # --- NEW: Configuration for slight line length variation ---
   line_length_variation:
     # Max variation as a fraction of the base line length.
     # e.g., 0.1 means lines can be up to 10% shorter or longer than the base.
     variation_factor: { dist: "uniform_float", min: 0.0, max: 0.1 }
-  # --- END NEW ---
 
   # Augmentations (Phase 1)
   font_size_variation:
@@ -125,7 +116,6 @@ textbox_content:
     strength_factor: { dist: "uniform_float", min: 0.1, max: 0.25 }
 
 
-# --- TextBox Geometric Distortion (Phase 2) ---
 # --- TextBox Geometric Distortion (Phase 2) ---
 textbox_distortion:
   # Each distortion has a probability of being applied
@@ -158,13 +148,11 @@ textbox_distortion:
     angle_deg: { dist: "uniform_float", min: -5.0, max: 5.0 }
     position_factor: { dist: "uniform_float", min: -0.45, max: 0.45 }
     crease_width_factor: { dist: "uniform_float", min: 0.05, max: 0.2 }
-    # --- ADD THESE NEW BLOCKS ---
     # Horizontal center of the crease, as a fraction of textbox width.
     # -0.5 is left edge, 0 is center, 0.5 is right edge.
     crease_center_x_factor: { dist: "uniform_float", min: -0.4, max: 0.4 }
     # Length of the crease, as a fraction of the textbox width.
     crease_length_factor: { dist: "uniform_float", min: 0.2, max: 0.3 }
-    # --- END NEW ---
 
 # --- Page-Level Augmentations (Phase 3) ---
 page_augmentations:
@@ -217,7 +205,7 @@ textbox_splitting:
     font_size_factor: { dist: "uniform_float", min: 0.8, max: 1.2 }
     rotation_deg: { dist: "uniform_float", min: -1.0, max: 1.0 }
 
-    # --- NEW: Directional shift factors ---
+    
     # For horizontal splits, shift mainly along X axis.
     horizontal_split_shift_x_factor: { dist: "uniform_float", min: -0.05, max: 0.05 }
     horizontal_split_shift_y_factor: { dist: "uniform_float", min: -0.05, max: 0.05 }
@@ -225,11 +213,10 @@ textbox_splitting:
     vertical_split_shift_x_factor: { dist: "uniform_float", min: -0.05, max: 0.05 }
     vertical_split_shift_y_factor: { dist: "uniform_float", min: -0.05, max: 0.05 }
 
-    # --- NEW: Scaling for internal crops ---
+   
     # For internal crops, the inner box is scaled down instead of shifted.
     internal_crop_scale_factor: { dist: "uniform_float", min: 0.8, max: 0.95 }
 
-    # --- NEW: Line reduction ---
     # A percentage of lines to remove entirely from the augmented box, before cutting.
     line_reduction_ratio: { dist: "uniform_float", min: 0.25, max: 0.75 } # Drop up to 80% of lines
 
@@ -237,7 +224,6 @@ textbox_splitting:
     line_cut_short_prob: { dist: "uniform_float", min: 0.0, max: 0.10 }
     line_cut_short_factor: { dist: "uniform_float", min: 0.2, max: 0.8 }
 
-    # --- NEW: Spacing and Scaling Augmentations ---
     # Stretches/compresses character spacing within each line.
     stretch_x_factor: { dist: "uniform_float", min: 0.97, max: 1.03 }
     # Stretches/compresses the spacing between lines.

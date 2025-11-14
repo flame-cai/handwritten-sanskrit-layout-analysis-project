@@ -1,9 +1,6 @@
 # augmentation.yaml
 
 general:
-  # input_dir: "synthetic-data-gen/manuscript-gnn-benchmark/data/real-data/unaugmented-training-dataset"
-  # output_dir: "synthetic-data-gen/manuscript-gnn-benchmark/data/real-data/train"
-  # val_output_dir: "synthetic-data-gen/manuscript-gnn-benchmark/data/real-data/validation"
   num_augmentations_per_sample: 500
   num_workers: -1 # Use all available CPU cores
   base_seed: 42
@@ -65,7 +62,6 @@ phase3_page:
     enabled: true
     # This is the probability that dropout will be ATTEMPTED on a sample.
     probability: 0
-    # CORRECTED: The key now matches the unambiguous field name in the Pydantic model.
     # This is the distribution from which the ACTUAL dropout rate is sampled.
     dropout_probability_dist: { dist: "uniform_float", min: 0.0, max: 0.0 } # Max 1% dropout
 

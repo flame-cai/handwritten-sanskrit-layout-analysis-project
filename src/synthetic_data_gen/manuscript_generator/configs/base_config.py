@@ -37,11 +37,8 @@ class GenerationConfig(BaseModel):
     num_workers: int
     base_seed: int
     output_dir: str
-    dry_run_num_samples: int
 
 class VisualizationConfig(BaseModel):
-    enabled: bool
-    render_on_dry_run_only: bool
     coloring: Literal["textbox", "textline"]
     point_size_multiplier: float
 
@@ -120,7 +117,7 @@ class WarpCurlConfig(DistortionAugmentationConfig):
     phase_x: AnyDist
     phase_y: AnyDist
 
-# --- NEW: Add the config model for our new augmentation ---
+#  Add the config model for our new augmentation ---
 class LinearCreaseConfig(DistortionAugmentationConfig):
     num_creases: AnyDist
     strength: AnyDist
@@ -129,15 +126,15 @@ class LinearCreaseConfig(DistortionAugmentationConfig):
     crease_width_factor: AnyDist # <-- ADD THIS LINE
     crease_center_x_factor: AnyDist # Horizontal center of the crease
     crease_length_factor: AnyDist # Length of the crease
-# --- END NEW ---
+
 
 class TextBoxDistortionConfig(BaseModel):
     shear: ShearConfig
     stretch: StretchConfig
     warp_curl: WarpCurlConfig
-    # --- NEW: Add the new config to the main distortion model ---
+    #  Add the new config to the main distortion model ---
     linear_crease: LinearCreaseConfig
-    # --- END NEW ---
+
 
 class PageAugmentationsConfig(BaseModel):
     orientation_deg: AnyDist
@@ -150,7 +147,7 @@ class SplitAugmentationConfig(BaseModel):
     enabled: bool = True
     font_size_factor: AnyDist = Field(default_factory=lambda: {"dist": "uniform_float", "min": 0.8, "max": 1.2})
     
-    # --- NEW: Scaling and Stretching Factors ---
+    #  Scaling and Stretching Factors ---
     stretch_x_factor: AnyDist = Field(default_factory=lambda: {"dist": "uniform_float", "min": 0.8, "max": 1.2})
     stretch_y_factor: AnyDist = Field(default_factory=lambda: {"dist": "uniform_float", "min": 0.8, "max": 1.2})
     uniform_scale_factor: AnyDist = Field(default_factory=lambda: {"dist": "uniform_float", "min": 0.9, "max": 1.1})
@@ -174,7 +171,7 @@ class TextBoxSplittingConfig(BaseModel):
     enabled: bool = False
     probability: float = Field(0.5, description="Probability to attempt a split on a given textbox.")
     
-    # --- NEW: Bias for aspect ratio based splitting ---
+    #  Bias for aspect ratio based splitting ---
     aspect_ratio_bias: float = Field(0.4, description="Value from 0 to 0.5. Controls how strongly aspect ratio influences split direction. Higher value means stronger bias.")
 
     split_method_probabilities: Dict[str, float] = Field(default_factory=lambda: {
@@ -193,6 +190,5 @@ class Config(BaseModel):
     textbox_content: TextBoxContentConfig
     textbox_distortion: TextBoxDistortionConfig
     page_augmentations: PageAugmentationsConfig
-    # --- NEW: Add the splitting config to the main Config model ---
+    #  Add the splitting config to the main Config model ---
     textbox_splitting: TextBoxSplittingConfig
-    # --- END NEW ---

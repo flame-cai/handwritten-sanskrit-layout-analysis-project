@@ -66,7 +66,7 @@ def _apply_split_augmentations(textbox: TextBox, split_method: str, config: Conf
                 indices_to_keep[indices_to_cut] = False
         textbox.points_local, textbox.line_ids_local, textbox.sub_box_ids_local = (arr[indices_to_keep] for arr in [textbox.points_local, textbox.line_ids_local, textbox.sub_box_ids_local])
 
-    # --- NEW: 4. Geometric Stretching and Scaling ---
+    # 4. Geometric Stretching and Scaling ---
     # Horizontal Stretch (Character Spacing)
     stretch_x = sample_from_distribution(aug_config.stretch_x_factor, rng)
     if abs(1.0 - stretch_x) > 1e-6:
@@ -129,7 +129,7 @@ def _create_split_textbox(original_textbox: TextBox, mask: np.ndarray) -> Option
         
     new_box = TextBox(box_type=original_textbox.box_type)
     
-    # --- MODIFIED: Propagate all three arrays ---
+    #  Propagate all three arrays ---
     points, line_ids, sub_box_ids = _re_index_labels(
         original_textbox.points_local[mask],
         original_textbox.line_ids_local[mask],
@@ -153,7 +153,7 @@ def _split_horizontal(textbox: TextBox, rng: np.random.Generator) -> List[TextBo
     """Splits a textbox into top and bottom halves."""
     y_coords = textbox.points_local[:, 1]
     min_y, max_y = np.min(y_coords), np.max(y_coords)
-    # --- MODIFIED: Constrain split point ---
+    #  Constrain split point ---
     y_range = max_y - min_y
     split_point = rng.uniform(min_y + y_range * 0.15, max_y - y_range * 0.15)
     
@@ -169,7 +169,7 @@ def _split_vertical(textbox: TextBox, rng: np.random.Generator) -> List[TextBox]
     """Splits a textbox into left and right halves."""
     x_coords = textbox.points_local[:, 0]
     min_x, max_x = np.min(x_coords), np.max(x_coords)
-    # --- MODIFIED: Constrain split point ---
+    #  Constrain split point ---
     x_range = max_x - min_x
     split_point = rng.uniform(min_x + x_range * 0.15, max_x - x_range * 0.15)
     
@@ -182,7 +182,7 @@ def _split_vertical(textbox: TextBox, rng: np.random.Generator) -> List[TextBox]
     return [b for b in [box1, box2] if b]
 
 def _split_internal_crop(textbox: TextBox, rng: np.random.Generator) -> List[TextBox]:
-    # (This function remains unchanged)
+    """Splits a textbox into an inner cropped box and an outer ring box."""
     x, y = textbox.points_local[:, 0], textbox.points_local[:, 1]
     min_x, max_x = np.min(x), np.max(x)
     min_y, max_y = np.min(y), np.max(y)
@@ -213,7 +213,7 @@ def attempt_textbox_split(textbox: TextBox, config: Config, rng: np.random.Gener
     if textbox.points_local is None or textbox.points_local.shape[0] < 10:
         return [textbox]
 
-    # --- MODIFIED: Bias split method based on aspect ratio ---
+    #  Bias split method based on aspect ratio ---
     base_probs = split_config.split_method_probabilities
     methods = list(base_probs.keys())
     weights = np.array(list(base_probs.values()))
@@ -234,7 +234,7 @@ def attempt_textbox_split(textbox: TextBox, config: Config, rng: np.random.Gener
         weights /= np.sum(weights) # Re-normalize
 
     chosen_method = rng.choice(methods, p=weights)
-    # --- END MODIFICATION ---
+
 
     split_boxes = []
     if chosen_method == "horizontal":
@@ -248,7 +248,7 @@ def attempt_textbox_split(textbox: TextBox, config: Config, rng: np.random.Gener
         box_to_augment_idx = rng.choice([0, 1])
         box_to_augment = split_boxes[box_to_augment_idx]
         
-        # --- MODIFIED: For internal crop, always augment the INNER box ---
+        #  For internal crop, always augment the INNER box ---
         if chosen_method == "internal_crop":
             # Heuristic: the inner box is likely to have fewer points
             if split_boxes[0].points_local.shape[0] < split_boxes[1].points_local.shape[0]:

@@ -48,7 +48,7 @@ class GeneralConfig(BaseModel):
     input_dir: str = "./data/real-dataset"
     output_dir: str = "./data/augmented-dataset"
     
-    # --- MODIFIED: Added the required validation output directory field ---
+    #  Added the required validation output directory field ---
     val_output_dir: str = "./data/validation-dataset"
     
     num_augmentations_per_sample: int = 5

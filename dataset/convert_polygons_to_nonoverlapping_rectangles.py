@@ -192,7 +192,6 @@ def save_processed_xml(original_xml_path: Path, output_xml_path: Path, processed
             text_region = ET.SubElement(page, "TextRegion", {"id": "processed_region_1"})
             ET.SubElement(text_region, "Coords", {"points": ""}) # Add empty Coords for schema validity
 
-        # --- SOLUTION ---
         # Flatten the list: convert any MultiPolygon into a series of Polygons.
         # This elegantly handles the error case.
         flat_polygons = []

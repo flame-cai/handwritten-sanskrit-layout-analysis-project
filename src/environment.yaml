@@ -16,7 +16,7 @@ dependencies:
   - scikit-learn
   - scikit-image
   - matplotlib
-  - pytorch==2.4.1
+  - pytorch
   - torchvision
   - pytorch-cuda=12.1 
   - pyg
@@ -33,9 +33,11 @@ dependencies:
   - pyyaml
   - conda-forge::pytorch_spline_conv
   - pip:
+    - shapely
     - lmdb
     - nltk
     - python-json-logger
     - regex
     - pydantic
     - wandb
+    

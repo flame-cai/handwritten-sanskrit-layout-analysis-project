@@ -36,7 +36,7 @@ class Page:
         global_line_id_offset = 0
         global_textbox_id_offset = 0 # <-- NEW offset for sub-textbox labels
 
-        # --- MODIFIED: The loop now manages two separate global ID counters ---
+        #  The loop now manages two separate global ID counters ---
         for box in self.textboxes:
             if box.points_global is None or box.points_global.shape[0] == 0:
                 continue
@@ -90,7 +90,7 @@ class Page:
         # --- Save all files ---
         np.savetxt(output_dir / f"{sample_id}_inputs_unnormalized.txt", self.points, fmt="%.2f %.2f %d")
         np.savetxt(output_dir / f"{sample_id}_inputs_normalized.txt", points_normalized, fmt="%.6f %.6f %.6f")
-        # --- MODIFIED: Save the new sub-textbox labels to the correct file ---
+        #  Save the new sub-textbox labels to the correct file ---
         # Note: The output filename `_labels_textbox.txt` is kept for compatibility with downstream consumers.
         np.savetxt(output_dir / f"{sample_id}_labels_region.txt", self.sub_textbox_labels, fmt="%d")
         np.savetxt(output_dir / f"{sample_id}_labels_textline.txt", self.textline_labels, fmt="%d")

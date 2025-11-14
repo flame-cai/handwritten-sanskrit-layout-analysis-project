@@ -12,12 +12,11 @@ def apply_font_size_variation(points: np.ndarray, line_ids: np.ndarray, config: 
     aug_config = config.textbox_content.font_size_variation
     variation = sample_from_distribution(aug_config['variation_factor'], rng)
     
-    # --- Start of Fix ---
+
     # Apply multiplicatively. The scale (standard deviation) for the normal distribution
     # cannot be negative, so we take the absolute value of the sampled variation.
     noise = rng.normal(0, abs(variation), size=points.shape[0])
     points[:, 2] *= (1 + noise)
-    # --- End of Fix ---
 
     points[:, 2] = np.maximum(1, points[:, 2]) # Ensure font size is positive
     return points

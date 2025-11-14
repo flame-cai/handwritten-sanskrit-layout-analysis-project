@@ -154,7 +154,7 @@ def _augment_single_instance(task_info: tuple):
     if p3_config.enabled and rng.random() < p3_config.probability:
         aug_points, kept_indices = AUGMENTATIONS['point_dropout'](aug_points, None, config_adapter, rng)
         aug_labels = aug_labels[kept_indices]
-    # --- END AUGMENTATION PIPELINE ---
+    #  AUGMENTATION PIPELINE ---
 
     aug_page_id = f"{page_id}_{aug_idx}"
     save_augmented_data(aug_page_id, output_dir, dims, aug_points, aug_labels)
@@ -183,7 +183,7 @@ def main():
         default='configs/augmentation.yaml',
         help='Path to the YAML configuration file for augmentations.'
     )
-    # --- NEW: Add command-line arguments for directories ---
+
     parser.add_argument('--input_dir', type=str, help='Override the input directory from the config file.')
     parser.add_argument('--output_dir', type=str, help='Override the output directory for training data from the config file.')
     parser.add_argument('--val_output_dir', type=str, help='Override the output directory for validation data from the config file.')
@@ -203,7 +203,6 @@ def main():
         logging.critical(f"Error validating configuration: {e}")
         return
 
-    # --- MODIFIED: Prioritize command-line arguments over config values ---
     input_dir = Path(args.input_dir) if args.input_dir else Path(config.general.input_dir)
     train_output_dir = Path(args.output_dir) if args.output_dir else Path(config.general.output_dir)
     
@@ -228,7 +227,7 @@ def main():
         logging.warning("No pages found. Exiting.")
         return
 
-    # --- NEW: Shuffle and split the data ---
+    #Shuffle and split the data ---
     logging.info("Shuffling and splitting dataset into 0.8 train and 0.2 validation...")
     rng = np.random.default_rng(config.general.base_seed)
     shuffled_page_ids = np.array(page_ids, dtype=object)
@@ -240,13 +239,6 @@ def main():
 
     logging.info(f"Training set size: {len(train_page_ids)} pages.")
     logging.info(f"Validation set size: {len(val_page_ids)} pages.")
-
-    # --- NEW: Process and save the validation set (copy only) ---
-    # logging.info(f"Copying {len(val_page_ids)} validation samples to '{val_output_dir}'...")
-    # for page_id in tqdm(val_page_ids, desc="Copying validation data"):
-    #     copy_original_data(page_id, input_dir, val_output_dir)
-
-    # --- MODIFIED: Process the training set (copy original + augment) ---
     logging.info(f"Processing {len(train_page_ids)} training samples for augmentation...")
 
     # First, copy all original training files

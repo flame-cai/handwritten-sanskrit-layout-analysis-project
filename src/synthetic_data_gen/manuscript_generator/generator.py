@@ -60,9 +60,7 @@ class SyntheticManuscriptGenerator:
 
 
                 # 4. Visualize if enabled
-                is_dry_run = self.config.generation.num_samples <= self.config.generation.dry_run_num_samples
-                if self.config.visualization.enabled:
-                    if not self.config.visualization.render_on_dry_run_only or is_dry_run:
+                if self.config.generation.num_samples <= 50:
                         viz_path = self.output_dir / f"{sample_id}.png"
                         visualize_page(page, self.config.visualization, viz_path)
 
@@ -78,7 +76,7 @@ class SyntheticManuscriptGenerator:
             dry_run: If True, generates a small number of samples for testing.
         """
         start_time = time.time()
-        num_samples = self.config.generation.dry_run_num_samples if dry_run else self.config.generation.num_samples
+        num_samples = 50 if dry_run else self.config.generation.num_samples
 
         master_seed = self.config.generation.base_seed
 

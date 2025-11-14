@@ -18,7 +18,7 @@ def generate_rejection_sampling_layout(config: Config, rng: np.random.Generator)
     Generates a page layout by creating textboxes and placing them using rejection sampling
     to avoid overlaps. Includes logic to split textboxes and place the fragments closely.
     """
-    # --- MODIFIED: Page dimension sampling logic ---
+
     page_config = config.page
     orientations = list(page_config.orientation_probabilities.keys())
     probs = list(page_config.orientation_probabilities.values())
@@ -34,7 +34,7 @@ def generate_rejection_sampling_layout(config: Config, rng: np.random.Generator)
         side = sample_from_distribution(page_config.square_side, rng)
         page_width = side
         page_height = side
-    # --- END MODIFICATION ---
+
 
     page = Page(width=page_width, height=page_height)
 
@@ -58,15 +58,15 @@ def generate_rejection_sampling_layout(config: Config, rng: np.random.Generator)
             if textbox.points_local is None or textbox.points_local.shape[0] < 3:
                 continue
 
-            # --- NEW: Attempt to split the textbox ---
+            #  Attempt to split the textbox ---
             textboxes_to_place = attempt_textbox_split(textbox, config, rng)
-            # --- END NEW ---
+
 
             max_placement_attempts = sample_from_distribution(config.rejection_sampling.max_placement_attempts, rng)
             
             placed_boxes_for_this_attempt = []
             
-            # --- MODIFIED: Placement logic to handle one or two boxes ---
+            #  Placement logic to handle one or two boxes ---
             is_split_attempt = len(textboxes_to_place) > 1
             anchor_box = textboxes_to_place[0]
 
@@ -138,6 +138,6 @@ def generate_rejection_sampling_layout(config: Config, rng: np.random.Generator)
                 page.textboxes.extend(placed_boxes_for_this_attempt)
                 break # Success, move to generating the next textbox
             # If not successful, the loop continues to the next box generation attempt
-            # --- END MODIFIED ---
+
     
     return [page]

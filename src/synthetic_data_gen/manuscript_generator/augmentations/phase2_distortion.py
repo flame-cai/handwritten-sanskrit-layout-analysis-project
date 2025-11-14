@@ -29,11 +29,11 @@ def apply_stretch(points: np.ndarray, textbox: TextBox, config: Config, rng: np.
 @register_augmentation("warp_curl")
 def apply_warp_curl(points: np.ndarray, textbox: TextBox, config: Config, rng: np.random.Generator) -> np.ndarray:
     """Applies a non-linear, wave-like distortion."""
-    # --- Start of Fix ---
+    # 
     # Guard against division by zero for textboxes with no height or width
     if textbox.height is None or textbox.height <= 0 or textbox.width is None or textbox.width <= 0:
         return points
-    # --- End of Fix ---
+    # 
 
     aug_config = config.textbox_distortion.warp_curl
     
@@ -96,7 +96,7 @@ def apply_linear_crease(points: np.ndarray, textbox: TextBox, config: Config, rn
         if sigma_perp < 1e-6: continue
         vertical_falloff = np.exp(-(distances_perp**2) / (2 * sigma_perp**2))
 
-        # --- NEW LOGIC: Calculate horizontal falloff for crease length ---
+        # Calculate horizontal falloff for crease length
         # Define the horizontal center of the crease
         center_x = (textbox.width / 2) * center_x_factor
         
@@ -107,7 +107,7 @@ def apply_linear_crease(points: np.ndarray, textbox: TextBox, config: Config, rn
         sigma_para = textbox.width * length_factor
         if sigma_para < 1e-6: continue
         horizontal_falloff = np.exp(-(distances_para**2) / (2 * sigma_para**2))
-        # --- END NEW LOGIC ---
+
         
         # 3. Combine falloffs and calculate total displacement
         total_falloff = vertical_falloff * horizontal_falloff

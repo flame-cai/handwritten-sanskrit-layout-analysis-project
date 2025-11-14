@@ -17,14 +17,14 @@ def sample_from_distribution(dist_config: Union[AnyDist, dict], rng: np.random.G
     Returns:
         A sampled value.
     """
-    # --- Start of Fix ---
+    # 
     # Normalize the input: If it's a Pydantic model, convert it to a dictionary.
     # This allows the rest of the function to use consistent dictionary access.
     if isinstance(dist_config, BaseModel):
         params = dist_config.model_dump()
     else:
         params = dist_config
-    # --- End of Fix ---
+    # 
 
     dist_type = params['dist']
 
