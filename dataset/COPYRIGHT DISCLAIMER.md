@@ -1,6 +1,7 @@
 # COPYRIGHT NOTICE AND FAIR USE DECLARATION
-This dataset contains reference links only and does not host, redistribute, or republish any copyrighted content. We do not serve as a substitute for or competitor to the original archive. Users must access all manuscript images and metadata directly from the copyright holder's official platform.
-All original manuscript images and metadata referenced in this dataset are © Lalchand Research Library, DAV College, Chandigarh, India, and remain the exclusive property of the copyright holder. Original materials are made available by the copyright holder through the SPL Rare Books Digital Archive for educational and research purposes.
+This dataset contains reference links only and does not host, redistribute, or republish any copyrighted content. We do not serve as a substitute for or competitor to the original archive. Users must access original manuscript images directly from the copyright holder's official platform.
+
+All original manuscript images reference in this dataset are © Lalchand Research Library, DAV College, Chandigarh, India, and remain the exclusive property of the copyright holder. Original materials are made available by the copyright holder through the SPL Rare Books Digital Archive for educational and research purposes.
 
 ## Fair Use Rationale 
 This dataset is provided under the fair use doctrine for the following transformative, non-commercial purposes:
