@@ -1,4 +1,4 @@
-# Towards Text-Line Segmentation for Historical Manuscripts Using Graph Neural Networks and Synthetic Layout Data
+# Towards Text-Line Segmentation of Historical Documents Using Graph Neural Networks and Synthetic Layout Data
 
 
 **Version:** 1.0
