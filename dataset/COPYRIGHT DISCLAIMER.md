@@ -12,7 +12,7 @@ This dataset is provided under the fair use doctrine for the following transform
 5) Minimal Reproduction: This lazy dataset contains only metadata and reference links, requiring users to interact directly with the copyright holder's platform to access any copyrighted content.
 
 ## Acknowledgment: 
-We express our sincere gratitude to Lalchand Research Library, DAV College, Chandigarh, India, for making these invaluable rare manuscript materials available online for educational and research purposes, and for advancing public access to cultural heritage.
+We express our sincere gratitude to Lalchand Research Library, DAV College, Chandigarh, India, for making these invaluable rare manuscript materials available online for educational and research purposes.
 
 ## Contact: 
 For permissions beyond fair use or research collaboration, please contact Lalchand Research Library, DAV College, Chandigarh, India, directly at https://dav.splrarebooks.com/
