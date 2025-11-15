@@ -1,4 +1,5 @@
-# Installation Instructions
+# Synthetic Data Generator
+This script peforms domain randomization to generate synthetic layout data simulating complex layouts in the graph based formulation introduced in this project. Both the synthetic data and the real data use the same graph based format, making it easy to integrate synthetic data into training pipelines.
 
 ### Install Conda Environment
 
